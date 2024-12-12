@@ -79,10 +79,10 @@ class DokumenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.blueAccent,
         elevation: 0,
         title: const Text(
-          'Desa Sidakarya',
+          'Halaman Dokumen',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

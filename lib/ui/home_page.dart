@@ -44,9 +44,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: null,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -54,26 +53,35 @@ class _HomePageState extends State<HomePage> {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: Colors.grey[300], // Latar belakang abu-abu terang
-                  radius: 20, // Ukuran lingkaran profil
+                  backgroundColor: Colors.blueAccent, // Latar belakang biru terang
+                  radius: 25, // Ukuran lingkaran profil
                   child: Icon(
                     Icons.person, // Ikon bawaan Flutter
-                    color: Colors.black, // Warna hitam untuk ikon
-                    size: 20, // Ukuran ikon
+                    color: Colors.white, // Warna putih untuk ikon
+                    size: 25, // Ukuran ikon
                   ),
                 ),
-                SizedBox(width: 8), // Spasi antara avatar dan teks
+                SizedBox(width: 10), // Spasi antara avatar dan teks
                 Text(
                   "Hi, $displayName", // Menampilkan nama pengguna atau Guest
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
             IconButton(
               onPressed: _logout, // Memanggil fungsi logout
-              icon: Icon(Icons.logout, color: Colors.black),
+              icon: Icon(Icons.logout, color: Colors.white),
             ),
           ],
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.blue, Colors.purple], // Gradient untuk app bar
+            ),
+          ),
         ),
       ),
       body: Padding(
@@ -81,7 +89,20 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Fitur Utama
+            // Header text: "Selamat Datang di Desa Sidakarya"
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Text(
+                "Selamat Datang di Desa Sidakarya", 
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ),
+            // Tab Menu
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -106,7 +127,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 20),
             Text(
               "Lainnya",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             SizedBox(height: 20),
             Expanded(
@@ -153,19 +174,19 @@ class FeatureIcon extends StatelessWidget {
     // Menentukan ikon yang sesuai untuk setiap menu
     switch (title) {
       case 'Beranda':
-        icon = Icons.home; // Ikon untuk beranda
+        icon = Icons.home;
         break;
       case 'Dokumen':
-        icon = Icons.document_scanner; // Ikon untuk dokumen
+        icon = Icons.document_scanner;
         break;
       case 'Berita':
-        icon = Icons.article; // Ikon untuk berita
+        icon = Icons.article;
         break;
       case 'Profile Desa':
-        icon = Icons.location_city; // Ikon untuk profil desa
+        icon = Icons.location_city;
         break;
       default:
-        icon = Icons.circle; // Ikon default jika tidak ada yang cocok
+        icon = Icons.circle;
     }
 
     return GestureDetector(
@@ -173,19 +194,19 @@ class FeatureIcon extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             decoration: BoxDecoration(
               color: Colors.blue[100],
-              borderRadius: BorderRadius.circular(5), // Mengatur ujung melengkung
+              borderRadius: BorderRadius.circular(15), // Rounded corners
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4))], // Shadow
             ),
-            child: Icon(icon, size: 40),
+            child: Icon(icon, size: 40, color: Colors.blue),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 10),
           Text(
-            title.isNotEmpty ? title : 'Default', // Pastikan teks tidak null atau kosong
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14), // Tambahkan style jika diperlukan
+            title,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black),
           ),
         ],
       ),
@@ -207,24 +228,37 @@ class SpecialFeatureTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () async {
+        // Periksa apakah user sudah login menggunakan FirebaseAuth
+        FirebaseAuth auth = FirebaseAuth.instance;
+        User? user = auth.currentUser;
+
+        if (user == null) {
+          // Jika user belum login, arahkan ke halaman login
+          Navigator.pushNamed(context, '/loginpage');
+        } else {
+          // Jika sudah login, lanjutkan ke halaman tujuan
+          onTap();
+        }
+      },
       child: Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.all(18),
+        margin: EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           color: Colors.blue[50],
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3))], // Shadow
         ),
         child: Row(
           children: [
             Icon(icon, size: 40, color: Colors.blue),
             SizedBox(width: 16),
             Text(
-              title.isNotEmpty ? title : 'Default', // Pastikan teks tidak null atau kosong
+              title,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black, // Warna teks
+                color: Colors.black,
               ),
             ),
           ],

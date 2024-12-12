@@ -12,6 +12,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool isPasswordVisible = false; // Variabel untuk mengatur visibilitas password
 
   // Fungsi login menggunakan Firebase Authentication
   Future<void> _login() async {
@@ -95,8 +96,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
+      backgroundColor: Colors.blue[50], // Background lebih cerah dengan biru muda
+      resizeToAvoidBottomInset: true, // Menghindari overflow dengan keyboard
+      body: SingleChildScrollView( // Membuat tampilan dapat digulir
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
@@ -106,9 +108,9 @@ class _LoginPageState extends State<LoginPage> {
               Text(
                 "Sidakarya",
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.black, // Warna biru gelap untuk judul
                 ),
               ),
               SizedBox(height: 10),
@@ -117,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
-                  color: Colors.grey,
+                  color: Colors.black, // Warna biru lebih terang untuk subjudul
                 ),
               ),
               SizedBox(height: 40),
@@ -128,8 +130,10 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  prefixIcon: Icon(Icons.email, color: Colors.black),
                 ),
               ),
               SizedBox(height: 16),
@@ -137,11 +141,26 @@ class _LoginPageState extends State<LoginPage> {
               // Input Password
               TextField(
                 controller: passwordController,
-                obscureText: true,
+                obscureText: !isPasswordVisible, // Ganti berdasarkan status visibility
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  prefixIcon: Icon(Icons.lock, color: Colors.black),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
               ),
               SizedBox(height: 8),
@@ -155,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Text(
                     "Forgot Your Password?",
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.blue[600]),
                   ),
                 ),
               ),
@@ -167,8 +186,11 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.blue[800], // Tombol biru gelap
                     padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12), // Tombol dengan sudut melengkung
+                    ),
                   ),
                   child: Text(
                     'Login',
@@ -182,12 +204,12 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Divider(thickness: 1)),
+                  Expanded(child: Divider(thickness: 1, color: Colors.blue[600])),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text("Or"),
+                    child: Text("Or", style: TextStyle(color: Colors.blue[600])),
                   ),
-                  Expanded(child: Divider(thickness: 1)),
+                  Expanded(child: Divider(thickness: 1, color: Colors.blue[600])),
                 ],
               ),
               SizedBox(height: 16),
@@ -198,8 +220,11 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: _loginAsGuest,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
+                    backgroundColor: Colors.blue[400], // Tombol biru terang
                     padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12), // Tombol dengan sudut melengkung
+                    ),
                   ),
                   child: Text(
                     'Login as Guest',
@@ -217,12 +242,15 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushNamed(context, '/register'); // Navigasi ke halaman Register
                   },
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.black),
+                    side: BorderSide(color: Colors.blue),
                     padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: Text(
                     'Sign Up',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
+                    style: TextStyle(fontSize: 18, color: Colors.blue[800]),
                   ),
                 ),
               ),

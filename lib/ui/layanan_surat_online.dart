@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,21 @@ class _LayananSuratOnlinePageState extends State<LayananSuratOnlinePage> {
   final TextEditingController judulDokumenController = TextEditingController();
 
   String? filePath;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  // Fungsi untuk memastikan pengguna sudah login
+  Future<void> _checkLoginStatus() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Arahkan pengguna ke halaman login jika belum login
+      Navigator.pushReplacementNamed(context, '/loginpage');
+    }
+  }
 
   // Fungsi untuk memilih file
   Future<void> _pickFile() async {
@@ -40,6 +56,14 @@ class _LayananSuratOnlinePageState extends State<LayananSuratOnlinePage> {
     }
 
     try {
+      // Ambil user ID dari pengguna yang login
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        _showErrorDialog('Anda harus login untuk menggunakan layanan ini.');
+        return;
+      }
+
       // Ambil file yang dipilih
       File file = File(filePath!);
 
@@ -55,6 +79,7 @@ class _LayananSuratOnlinePageState extends State<LayananSuratOnlinePage> {
 
       // Simpan data ke Firestore
       await FirebaseFirestore.instance.collection('surat_online').add({
+        'user_id': user.uid, // Simpan UID pengguna
         'name': namaController.text.trim(),
         'email': emailController.text.trim(),
         'alamat': alamatController.text.trim(),
@@ -76,7 +101,7 @@ class _LayananSuratOnlinePageState extends State<LayananSuratOnlinePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Error'),
+        title: Text('Gagal'),
         content: Text(message),
         actions: [
           TextButton(

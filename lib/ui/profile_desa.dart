@@ -5,7 +5,7 @@ class DesaProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.blueAccent,
         title: Text('Profil Desa Sidakarya'),
         centerTitle: true,
       ),

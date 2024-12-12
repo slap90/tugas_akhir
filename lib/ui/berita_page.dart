@@ -16,7 +16,7 @@ class BeritaPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Berita Terbaru'),
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.blueAccent,
         elevation: 0,
         centerTitle: true,
       ),

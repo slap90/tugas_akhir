@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'edit_profile_page.dart';  // Import halaman Edit Profile
+
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -88,7 +90,13 @@ class _ProfilePageState extends State<ProfilePage> {
               label: 'Email',
               value: email ?? 'Loading...', // Tampilkan email pengguna
               onTap: () {
-                // Logika untuk mengubah email
+                // Arahkan ke halaman Edit Email
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(),
+                  ),
+                );
               },
             ),
             // Nomor Telepon
@@ -96,7 +104,13 @@ class _ProfilePageState extends State<ProfilePage> {
               label: 'Nomor Telepon',
               value: phone ?? 'Loading...', // Tampilkan nomor telepon pengguna
               onTap: () {
-                // Logika untuk mengubah nomor telepon
+                // Arahkan ke halaman Edit Nomor Telepon
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(),
+                  ),
+                );
               },
             ),
           ],

@@ -85,20 +85,6 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.blueGrey,
-        elevation: 0,
-        centerTitle: true, 
-        title: Text(
-          _selectedIndex == 0
-              ? "Desa Sidakarya"
-              : _selectedIndex == 1
-                  ? "Aktivitas"
-                  : "Profile",
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
